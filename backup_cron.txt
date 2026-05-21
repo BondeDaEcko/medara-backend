@@ -1,0 +1,37 @@
+# =============================================================
+#  MEDARA — Configuração do Cron (backup automático)
+#  Para instalar no servidor Linux, rode:
+#    crontab -e
+#  e cole as linhas abaixo (sem o #)
+# =============================================================
+
+# Variáveis de ambiente necessárias para o pg_dump
+POSTGRES_DB=medara_db
+POSTGRES_USER=medara_user
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_PASSWORD=sua_senha_aqui
+
+# Roda o backup todo dia às 22:00
+0 22 * * * /opt/medara/backup.sh >> /var/log/medara_backup.log 2>&1
+
+# =============================================================
+#  COMO INSTALAR NO SERVIDOR (passo a passo):
+#
+#  1. Copie o backup.sh para o servidor:
+#       scp backup.sh usuario@ip_servidor:/opt/medara/backup.sh
+#
+#  2. Dê permissão de execução:
+#       chmod +x /opt/medara/backup.sh
+#
+#  3. Abra o crontab:
+#       crontab -e
+#
+#  4. Cole as linhas de variáveis + a linha "0 2 * * *" acima
+#
+#  5. Salve e feche. O cron já está ativo.
+#
+#  Para verificar se está funcionando depois de um dia:
+#       cat /var/log/medara_backup.log
+#       ls /var/backups/medara/
+# =============================================================
