@@ -44,9 +44,12 @@ limiter = Limiter(key_func=get_remote_address, default_limits=["200/minute"])
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     logger.info("Starting up MEDARA API [env=%s]...", settings.environment)
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-    logger.info("Database tables ensured.")
+    try:
+        async with engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
+        logger.info("Database tables ensured.")
+    except Exception as exc:
+        logger.error("Database unavailable on startup: %s — continuing anyway.", exc)
     yield
     logger.info("Shutting down — disposing database engine.")
     await engine.dispose()
