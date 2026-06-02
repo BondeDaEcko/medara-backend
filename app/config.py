@@ -56,9 +56,18 @@ class Settings(BaseSettings):
     max_request_body_mb: int = 10            # limite de upload em MB
 
     # Agora.io (videochamadas)
-    # Crie sua conta grátis em: https://console.agora.io
     agora_app_id: str = ""
     agora_app_certificate: str = ""
+
+    # Asaas (pagamentos)
+    asaas_api_key: str = ""
+    asaas_sandbox: bool = True
+
+    @property
+    def asaas_base_url(self) -> str:
+        if self.asaas_sandbox:
+            return "https://sandbox.asaas.com/api/v3"
+        return "https://api.asaas.com/api/v3"
 
 
 settings = Settings()

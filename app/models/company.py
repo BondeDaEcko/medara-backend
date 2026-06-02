@@ -4,10 +4,10 @@ from __future__ import annotations
 
 import enum
 import uuid
-from datetime import datetime
+from datetime import date, datetime
 from typing import List, Optional
 
-from sqlalchemy import Boolean, DateTime, Enum, String, func
+from sqlalchemy import Boolean, Date, DateTime, Enum, String, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base, UUIDMixin
@@ -35,6 +35,13 @@ class Company(Base, UUIDMixin):
         server_default=func.now(),
         nullable=False,
     )
+
+    # Asaas billing
+    asaas_customer_id:    Mapped[Optional[str]] = mapped_column(String(60), nullable=True)
+    asaas_subscription_id: Mapped[Optional[str]] = mapped_column(String(60), nullable=True)
+    payment_status: Mapped[str] = mapped_column(String(20), default="trial", nullable=False)
+    blocked_at:    Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
+    next_due_date: Mapped[Optional[date]]     = mapped_column(Date, nullable=True)
 
     # Relationships
     users: Mapped[List["User"]] = relationship(  # noqa: F821

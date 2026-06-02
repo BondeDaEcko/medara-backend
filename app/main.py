@@ -19,7 +19,7 @@ from app.config import settings
 from app.core.middleware import RequestSizeLimitMiddleware, SecurityHeadersMiddleware
 from app.database import engine
 from app.models import Base
-from app.routers import auth, backup, companies, consultations, doctors, users
+from app.routers import auth, backup, billing, companies, consultations, doctors, users
 
 # ---------------------------------------------------------------------------
 # Logging
@@ -127,6 +127,7 @@ app.include_router(companies.router)
 app.include_router(doctors.router)
 app.include_router(consultations.router)
 app.include_router(backup.router)
+app.include_router(billing.router)
 
 
 # ---------------------------------------------------------------------------
